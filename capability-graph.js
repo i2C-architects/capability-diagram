@@ -1145,16 +1145,6 @@ const graph = new Graph({
         'drag-canvas',
         'zoom-canvas',
         'optimize-viewport-transform',
-        function () {
-            return {
-                key: 'click-select',
-                type: 'click-select',
-                enable: (e) => e.targetType === 'node',
-                degree: 1,
-                neighborState: 'selected',
-                unselectedState: 'inactive',
-            };
-        },
     ],
     plugins: [
         {
@@ -1255,10 +1245,36 @@ graph.on(CanvasEvent.CLICK, () => {
 // node event to open url from the info icon on the bottom right of capability/tool nodes
 graph.on(NodeEvent.CLICK, (event) => {
     const { target } = event;
+    const nodeData = graph.getNodeData(target.id);
     if (target.className === 'link') {
         const parentNodeData = graph.getNodeData(target.parentNode.id).data;
         const url =parentNodeData.url;
         window.open(url);
     }
+    if(target.type === 'node')
+    {
+        const neighborNodesData = graph.getNeighborNodesData(nodeData.id);
+        const neighborIds = new Set(neighborNodesData.map(neighbor => neighbor.id));
+        const relatedEdgesData = graph.getRelatedEdgesData(nodeData.id, 'both');
+        const relatedEdgesIds = new Set(relatedEdgesData.map(edge => edge.id));
+        if(nodeData.data.tag === 'stages'){
+            selectNodeEdgeAndNeighbor(nodeData.id, neighborIds, relatedEdgesIds);
+        } 
+        else if(!nodeData.states.includes('selected')) {
+            selectNodeEdgeAndNeighbor(nodeData.id, neighborIds, relatedEdgesIds);
+        }
+    }
 });
+
+function selectNodeEdgeAndNeighbor(nodeId, neighborIds, relatedEdgesIds){
+    graph.getNodeData().forEach(node => {
+        let stateToSet = neighborIds.has(node.id) ? 'selected' : 'inactive';
+        graph.setElementState(node.id, stateToSet, true);
+    });
+    graph.getEdgeData().forEach(edge => {
+        let stateToSet = relatedEdgesIds.has(edge.id) ? 'selected' : 'inactive';
+        graph.setElementState(edge.id, stateToSet, true);
+    });
+    graph.setElementState(nodeId, 'selected', true);
+}
 //#endregion
