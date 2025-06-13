@@ -1148,83 +1148,87 @@ const graph = new Graph({
     ],
     plugins: [
         {
-          type: 'tooltip',
-          trigger: 'click',
-          getContent: (e, items) => {
-            if(e.targetType !== 'node')return;
-            if(items[0].data.tag === 'stages')return;
-            let item = items[0];
-            let nodeColour = CAPABILITY_COLOUR_MAP[item.data.tag];
+            type: 'tooltip',
+            trigger: 'click',
+            getContent: (e, items) => {
+                if(e.targetType !== 'node')return;
+                if(items[0].data.tag === 'stages')return;
+                let item = items[0];
+                let nodeColour = CAPABILITY_COLOUR_MAP[item.data.tag];
 
-            // Create tooltip container
-            const tooltipDiv = document.createElement('div');
-            tooltipDiv.style.padding = '12px';
-            tooltipDiv.style.background = nodeColour;
-            tooltipDiv.style.color = '#fff';
-            tooltipDiv.style.borderRadius = '5px';
-            tooltipDiv.style.boxShadow = '0px 4px 8px rgba(0, 0, 0, 0.2)';
-            tooltipDiv.style.fontFamily = 'DIN, sans-serif';
-            tooltipDiv.style.maxWidth = '300px';
-            tooltipDiv.style.pointerEvents = 'all';
+                // Create tooltip container
+                const tooltipDiv = document.createElement('div');
+                tooltipDiv.style.padding = '12px';
+                tooltipDiv.style.background = nodeColour;
+                tooltipDiv.style.color = '#fff';
+                tooltipDiv.style.borderRadius = '5px';
+                tooltipDiv.style.boxShadow = '0px 4px 8px rgba(0, 0, 0, 0.2)';
+                tooltipDiv.style.fontFamily = 'DIN, sans-serif';
+                tooltipDiv.style.maxWidth = '300px';
+                tooltipDiv.style.pointerEvents = 'all';
 
-            // Add item title
-            const itemTitle = document.createElement('h2');
-            itemTitleColour = CAPABILITY_COLOUR_MAP[item.data.tag];
-            itemTitle.innerText = item.data.title;
-            itemTitle.style.color = 'white';
-            itemTitle.style.fontFamily = 'DIN, sans-serif';
-            itemTitle.style.fontWeight = 800;
-            itemTitle.style.fontStyle = 'normal';
-            itemTitle.style.fontSize = '40px';
-            itemTitle.style.textShadow = `1px 1px #343A40, 2px 2px #343A40, 3px 3px #343A40, 4px 4px #343A40, 5px 5px #343A40, 6px 6px #343A40, 7px 7px #343A40`;
-            itemTitle.style.lineHeight = '40px';
-            itemTitle.style.margin = '5px 0';
-            tooltipDiv.appendChild(itemTitle);
+                // Add item title
+                const itemTitle = document.createElement('h2');
+                itemTitleColour = CAPABILITY_COLOUR_MAP[item.data.tag];
+                itemTitle.innerText = item.data.title;
+                itemTitle.style.color = 'white';
+                itemTitle.style.fontFamily = 'DIN, sans-serif';
+                itemTitle.style.fontWeight = 800;
+                itemTitle.style.fontStyle = 'normal';
+                itemTitle.style.fontSize = '40px';
+                itemTitle.style.textShadow = `1px 1px #343A40, 2px 2px #343A40, 3px 3px #343A40, 4px 4px #343A40, 5px 5px #343A40, 6px 6px #343A40, 7px 7px #343A40`;
+                itemTitle.style.lineHeight = '40px';
+                itemTitle.style.margin = '5px 0';
+                tooltipDiv.appendChild(itemTitle);
 
-            // Add details with styling
-            const details = [
-                { title: "Lead Time:", value: item.data.lead },
-                { title: "Requirements:", value: item.data.requirements },
-                { title: "Description:", value: item.data.description }
-            ];
+                // Add details with styling
+                const details = [
+                    { title: "Lead Time:", value: item.data.lead },
+                    { title: "Requirements:", value: item.data.requirements },
+                    { title: "Description:", value: item.data.description }
+                ];
 
-            details.forEach(({ title, value }) => {
-                // Create title element
-                const titleElement = document.createElement('span'); // Use <span> instead of <p>
-                titleElement.innerText = title;
-                titleElement.style.color = '#FFDD44'; 
-                titleElement.style.fontSize = '14px';
-                titleElement.style.fontWeight = 'bold';
-                titleElement.style.textDecoration = 'underline';
-                titleElement.style.marginRight = '5px'; 
-                // titleElement.style.lineHeight = '1em';
+                details.forEach(({ title, value }) => {
+                    // Create title element
+                    const titleElement = document.createElement('span'); // Use <span> instead of <p>
+                    titleElement.innerText = title;
+                    titleElement.style.color = '#FFDD44'; 
+                    titleElement.style.fontSize = '14px';
+                    titleElement.style.fontWeight = 'bold';
+                    titleElement.style.textDecoration = 'underline';
+                    titleElement.style.marginRight = '5px'; 
+                    // titleElement.style.lineHeight = '1em';
 
-                // Create value element
-                const valueElement = document.createElement('span');
-                valueElement.innerText = value;
-                valueElement.style.fontSize = '14px';
-                valueElement.style.color = 'white';
+                    // Create value element
+                    const valueElement = document.createElement('span');
+                    valueElement.innerText = value;
+                    valueElement.style.fontSize = '14px';
+                    valueElement.style.color = 'white';
 
-                // Wrap both elements in a single line
-                const lineContainer = document.createElement('p');
-                lineContainer.appendChild(titleElement);
-                lineContainer.appendChild(valueElement);
+                    // Wrap both elements in a single line
+                    const lineContainer = document.createElement('p');
+                    lineContainer.appendChild(titleElement);
+                    lineContainer.appendChild(valueElement);
 
-                tooltipDiv.appendChild(lineContainer);
-            });
+                    tooltipDiv.appendChild(lineContainer);
+                });
 
-            //link element to tool page
-            linkElement = document.createElement('a');
-            linkElement.href = item.data.url;
-            linkElement.innerText = 'Click to view more...';
-            linkElement.style.color = '#FFDD44';
-            linkElement.style.textDecoration = 'underline';
-            linkElement.style.cursor = 'pointer';
-            linkElement.target = '_blank'; // Open in new tab
-            tooltipDiv.appendChild(linkElement);
+                //link element to tool page
+                linkElement = document.createElement('a');
+                linkElement.href = item.data.url;
+                linkElement.innerText = 'Click to view more...';
+                linkElement.style.color = '#FFDD44';
+                linkElement.style.textDecoration = 'underline';
+                linkElement.style.cursor = 'pointer';
+                linkElement.target = '_blank'; // Open in new tab
+                tooltipDiv.appendChild(linkElement);
 
-            return tooltipDiv;
-          },
+                return tooltipDiv;
+            },
+        },
+        {
+            type: 'background',
+            background: '	#F5F5F5',
         },
       ],
     animation: true,
