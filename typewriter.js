@@ -1,6 +1,6 @@
 // set up text to print, each item in array is new line
 var aText = new Array(
-    "Zoom + Click",
+    "Click",
     "for more info..."
 );
 var iSpeed = 100; // time delay of print out

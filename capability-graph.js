@@ -1142,8 +1142,8 @@ const graph = new Graph({
         sortByCombo: true,
     },
     behaviors: [
-        'drag-canvas',
-        'zoom-canvas',
+        // 'drag-canvas',
+        // 'zoom-canvas',
         'optimize-viewport-transform',
     ],
     plugins: [
